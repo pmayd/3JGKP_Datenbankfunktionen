@@ -8,6 +8,9 @@ Hier werde ich nach und nach für euch Funktionsaufrufe posten, mit dennen ihr e
 
 Ebenso solltet ihr darauf achten, nach einer DB-Abfrage den Rückgabewert mit `Result = nil`wieder zu löschen, da ihr ansonsten bei einer erneuten Abfrage nicht entscheiden könnt, ob diese wirklich funktioniert hat oder ihr nicht noch mit dem alten Wert weiterarbeitet!
 
+Aktueller Stand des Dialogs:
+https://youtu.be/S_wDeOHSwlE
+
 ### Legende
 str = String
 
