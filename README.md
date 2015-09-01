@@ -32,7 +32,7 @@ https://community.bistudio.com/wiki/squadParams
 ```
 *Beschreibung:* Gibt den Rang des Spielers anhand seiner UID zurück, wie er in der DB steht. Die ausgegebene Information ist IMMER ein String und ist in der Variable "ResultXMLRang" zu finden.
 
-*Übergabewert:* Spieler oder Einheit, deren Rang erfragt werden soll
+*Übergabewert:* Spieler oder Einheit (unit), deren Rang erfragt werden soll
 
 *Rückgabewert:* ResultXMLInfo (str)
 
@@ -61,7 +61,7 @@ Die Ränge kommen mit folgenden Werten zurück, aber nur als Zahl! Bedeutung:
 ```
 *Beschreibung:* Funktion prüft, ob der Spieler bzw. dessen UID in der DB vorhanden ist. 
 
-*Übergabewert:* Spieler oder Einheit, deren Zugehörigkeit geprüft werden soll.
+*Übergabewert:* Spieler oder Einheit (unit), deren Zugehörigkeit geprüft werden soll.
 
 *Rückgabewert:* ResultIsMember (bool): true, falls Spieler in DB, sonst false
 
@@ -75,7 +75,7 @@ Alle folgenden Funktionen dienen dazu, Loadouts aus der DB zur Verfügung zu ste
 ```
 *Beschreibung:* Mit dieser Zeile könnt ihr per addAction oder Script eine benannte Kiste oder ein Fahrzeug automatisch einmalig mit einem Loadout füllen, das in der DB vorhanden ist (Name "loadout" ist durch den Namen in der DB zu ersetzen)
 
-*Übergabewert:* Kiste oder Fahrzeug (Object) sowie den Namen des Loadouts, der in der DB vorhanden sein muss.
+*Übergabewert:* Kiste oder Fahrzeug (Object) sowie den Namen des Loadouts (str), der in der DB vorhanden sein muss.
 
 *Rückghabewert:* Hier gibt es keinen Rückgabewert. Die Kiste bzw. das Fahrzeug wird sofort beladen.
 
@@ -84,6 +84,7 @@ Eigenes Kisten-Loadout? Benötigt wird ein Loadoutname, Items, Rucksäcke, Waffe
 **Wichtig:** Immer auf das Format achten! "Item":Anzahl;"Item":Anzahl! Nicht : und ; verwechseln!
 
 Beispiel:
+
 (Items) BWA3_optic_20x50_NSV:1;BWA3_Vector:5;ItemMap:5;AGM_MapTools:5;tf_anprc148jem:5 // 1x NSV + 5x Vector + 5 Karten + 5 Maptools und 5 kleine Funken
 
 (Rucksäcke) tf_anprc155:5
@@ -93,18 +94,20 @@ Beispiel:
 (Magazine) Laserbatteries:5;BWA3_DM25:15;SmokeShellGreen:15;BWA3_30Rnd_556x45_G36_SD:12
 
 ### Spieler mit Loadout ausrüsten
+```SQF
+    ["jgkp_get_loadout",[player,id]] call CBA_fnc_clientToServerEvent;
+```
+*Beschreibung:* Liefert den Inhalt des Loadouts für die gegebene ID (PK in DB). 
 
-    ["jgkp_get_loadout",[player,zug,gruppe,typ,name]] call CBA_fnc_clientToServerEvent;
+*Übergabewert:* ID (int)! ID (Primary Key) des Loadouteintrags in der DB. Muss in der DB existieren (s.u.).
 
-Der Funktion wird der aktuelle Spieler sowie als STRING Zug, Gruppe, Typ und Name eines Loadouts übergeben.
-Anschließend wird aus der DB der entsprechende Eintrag geladen und der Spieler direkt ausgerüstet. Das ganze ist soweit global und allgemeingültig
+*Rückgabewert:* Hier gibt es keinen Rückgabewert. Der Spieler wird automatisch sofort mit dem gewählten Loadout ausgestattet.
 
-Rückgabewert: keiner
-Bsp:
-["jgkp_get_loadout",[player,"I","1.","Flecktarn","GrpFhr"]] call CBA_fnc_clientToServerEvent;
+**Wichtig**: Die Funktion kann einmal innerhalb des neu erstellten Dialogsystems verwendet werden (Button Lade Loadout), oder auch direkt z.B. in der Init-Zeile einer EInheit, sofern man die ID kennt! Diese kann man aber über besagten Dialog in Erfahrung bringen, denn die ID des Loadouts steht hinter dem Namen des Loadouts in runden Klammern!
 
 Eintrag in der DB: Bitte alle Felder, die nur ein Item enthalten (headgear, uniform, vest, selectWeapon, ...) nur mit dem Klassennamen füllen, also "BWA3_G36" z.B.
-Für alle Listenfelder (uniformitems, vestitems, backpackitems, weapons, ...) ist die Schreibweise IMMER Klassname:Anzahl. Also auch bei nur 1 Item immer :1 angeben!
+
+Für alle Listenfelder (uniformitems, vestitems, backpackitems, weapons, ...) ist die Schreibweise IMMER "Klassname":Anzahl. Also auch bei nur 1 Item immer :1 angeben!
 
 Eigene Loadouts:
 
@@ -130,6 +133,3 @@ Eigene Loadouts:
     isEOD: tinyint(1)
     memberOnly: tinyint(1)
 
-
-
-[/clip]
